@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Countdown to Eman’s Birthday 💖</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --pink: #ff5fa2;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: linear-gradient(to bottom, #2b1055, #7597de);
+  font-family: 'Poppins', sans-serif;
+  color: white;
+  text-align: center;
+  overflow-x: hidden;
+}
+
+/* Main Card */
+.container {
+  margin: 40px auto;
+  max-width: 350px;
+  padding: 30px;
+  background: rgba(255,255,255,0.08);
+  backdrop-filter: blur(16px);
+  border-radius: 30px;
+  box-shadow: 0 25px 60px rgba(0,0,0,0.4);
+}
+
+/* Title */
+h1 {
+  font-size: 1.6em;
+  margin-bottom: 10px;
+}
+
+/* Slideshow */
+.slideshow {
+  width: 100%;
+  height: 320px;
+  margin: 20px auto;
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+.slide {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;   /* FULL IMAGE, NO CROP */
+  display: none;
+}
+
+.slide.active {
+  display: block;
+}
+
+/* Timer */
+.timer {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 15px;
+}
+
+.unit {
+  background: rgba(255,255,255,0.15);
+  padding: 10px;
+  border-radius: 15px;
+  width: 22%;
+}
+
+.num {
+  font-size: 1.6em;
+  font-weight: 600;
+  color: var(--pink);
+}
+
+.label {
+  font-size: 0.65em;
+  opacity: 0.7;
+}
+
+/* Birthday Message */
+#msg {
+  display: none;
+  margin-top: 20px;
+  font-size: 1.4em;
+  animation: beat 1.5s infinite;
+}
+
+@keyframes beat {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+/* Music Button */
+button {
+  margin-top: 15px;
+  padding: 10px 22px;
+  border-radius: 20px;
+  border: none;
+  background: var(--pink);
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* Floating Hearts */
+.heart {
+  position: fixed;
+  bottom: -10px;
+  color: rgba(255, 105, 180, 0.7);
+  font-size: 18px;
+  animation: floatUp linear infinite;
+  pointer-events: none;
+}
+
+@keyframes floatUp {
+  0% {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-110vh) scale(1.4);
+    opacity: 0;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+  <h1>Countdown to Eman’s Birthday 🎂</h1>
+
+  <!-- Slideshow -->
+  <div class="slideshow">
+    <img src="images/img1.jpg" class="slide active">
+    <img src="images/img2.jpg" class="slide">
+    <img src="images/img3.jpg" class="slide">
+  </div>
+
+  <!-- Timer -->
+  <div id="timer" class="timer">
+    <div class="unit"><div class="num" id="d">00</div><div class="label">Days</div></div>
+    <div class="unit"><div class="num" id="h">00</div><div class="label">Hours</div></div>
+    <div class="unit"><div class="num" id="m">00</div><div class="label">Minutes</div></div>
+    <div class="unit"><div class="num" id="s">00</div><div class="label">Seconds</div></div>
+  </div>
+
+  <!-- Birthday Message -->
+  <div id="msg">
+    💖 Happy Birthday, Eman 💖  
+    <br>
+    <small>You make the world brighter ✨</small>
+  </div>
+
+  <!-- Music -->
+  <button id="btn" onclick="playMusic()">Play Birthday Song 🎶</button>
+
+</div>
+
+<audio id="song" loop>
+  <source src="birthday.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+/* MUSIC */
+function playMusic() {
+  document.getElementById("song").play();
+  document.getElementById("btn").style.display = "none";
+}
+
+/* COUNTDOWN: 3 MARCH, 12:00 AM */
+const target = new Date(2026, 2, 3, 0, 0, 0).getTime();
+
+setInterval(() => {
+  const now = new Date().getTime();
+  const diff = target - now;
+
+  if (diff <= 0) {
+    document.getElementById("timer").style.display = "none";
+    document.getElementById("msg").style.display = "block";
+    return;
+  }
+
+  d.innerText = Math.floor(diff / 86400000);
+  h.innerText = Math.floor((diff % 86400000) / 3600000);
+  m.innerText = Math.floor((diff % 3600000) / 60000);
+  s.innerText = Math.floor((diff % 60000) / 1000);
+}, 1000);
+
+/* SLIDESHOW */
+let slides = document.querySelectorAll(".slide");
+let i = 0;
+
+setInterval(() => {
+  slides[i].classList.remove("active");
+  i = (i + 1) % slides.length;
+  slides[i].classList.add("active");
+}, 3000);
+
+/* FLOATING HEARTS */
+setInterval(() => {
+  const h = document.createElement("div");
+  h.className = "heart";
+  h.innerText = "❤";
+  h.style.left = Math.random() * 100 + "vw";
+  h.style.fontSize = 14 + Math.random() * 16 + "px";
+  h.style.animationDuration = 5 + Math.random() * 4 + "s";
+  document.body.appendChild(h);
+  setTimeout(() => h.remove(), 9000);
+}, 300);
+</script>
+
+</body>
+</html>
